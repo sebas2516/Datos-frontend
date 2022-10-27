@@ -1,0 +1,41 @@
+
+
+  <script type="text/javascript">
+
+    var userName = "";
+    var passWord = "";
+    
+    function authenticateUser(user, password)
+    {
+        var auth = user + ":" + password;    
+        var hash = btoa(auth); 
+        return "Basic " + hash;
+    }
+    
+    function CallWebAPI() {    
+      var request = new XMLHttpRequest();
+      var autenticate = authenticateUser(userName, passWord);
+      var placa = ""
+      var respuesta = "";
+      //alert("Encode d string pasword:"+autenticate);
+        request.open("get", "https://gps.coltrack.com/gps/api.jsp", false);	
+        request.setRequestHeader("Authorization", authenticateUser(userName, passWord));  	
+        request.send();   
+      console.log(request.responseText);    
+      respuesta=JSON.parse(request.response);       
+      salida = respuesta.message.data;   
+      response.innerHTML = "PLACA | CIUDAD | TEMPERATURA";
+      for (let index = 0; index < salida.length; index++) {
+        console.log(salida[index].PLACA);//poner el nombre exacto del campo desedo para obtener array de datos (por ejemplo: "PLACA")        
+        response.innerHTML = response.innerHTML+"<tr>"+salida[index].PLACA+"&nbsp;|&nbsp;"+salida[index].CIUDAD+"&nbsp;|&nbsp;"+salida[index].TEMPERATURA;//poner el nombre exacto del campo desedo para obtener array de datos (por ejemplo: "PLACA")        
+      }
+    }
+    </script>
+    
+    <div>
+    <!-- <input type="button" class="btn btn-primary" value="Call Web API" onclick="javascript:CallWebAPI();" /> -->
+    </div>
+    <div id="response">
+    </div>
+</body>
+</html>
